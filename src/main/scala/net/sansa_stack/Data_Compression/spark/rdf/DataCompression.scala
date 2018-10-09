@@ -6,7 +6,7 @@ import scala.collection.mutable
 import net.sansa_stack.rdf.spark.io._
 import org.apache.jena.graph
 import org.apache.jena.graph.Node
-import org.apache.spark.sql.{Dataset, Row, SparkSession}
+import org.apache.spark.sql.{Dataset, Row, SaveMode, SparkSession}
 import org.apache.jena.riot.Lang
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
@@ -83,10 +83,10 @@ object DataCompression {
     println("Count after Transformation: "+result.count());
 
     //Store Dictionaries (Dimension tables) and Fact table on HDFS
-    result.write.csv(output+"triples")
-    subjectDF.write.csv(output+"subject")
-    objectDF.write.csv(output+"object")
-    predicateDF.write.csv(output+"predicate")
+    result.write.mode(SaveMode.Overwrite).csv(output+"triples")
+    subjectDF.write.mode(SaveMode.Overwrite).csv(output+"subject")
+    objectDF.write.mode(SaveMode.Overwrite).csv(output+"object")
+    predicateDF.write.mode(SaveMode.Overwrite).csv(output+"predicate")
 
 
     //Performing Queries on Compressed RDDs
